@@ -17,7 +17,7 @@ async function connectDB() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI);
+    cached.promise = mongoose.connect("mongodb+srv://muzammilmetar82_db_user:rvEX2A63uXAK364y@katariya.pqt28ne.mongodb.net/katariya");
   }
 
   cached.conn = await cached.promise;
