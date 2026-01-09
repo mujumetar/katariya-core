@@ -1,0 +1,17 @@
+{
+  "name": "kataria-backend",
+  "version": "1.0.0",
+  "description": "xyz",
+  "main": "server.js ",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "author": "muju",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.2",
+    "nodemon": "^3.1.11"
+  }
+}
