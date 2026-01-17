@@ -67,4 +67,4 @@ app.put("/", async (req, res) => {
   res.json({ success: true, price: updated.price });
 });
 
-module.exports = serverless(app);
+module.exports = serverless(app, { basePath: '/api/price' });
