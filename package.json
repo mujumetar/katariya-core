@@ -5,7 +5,7 @@
   "main": "price.js ",
   "scripts": {
     "test": "node price.js",
-"start": "nodemon api/price.js"
+    "start": "nodemon api/price.js"
   },
   "author": "muju",
   "license": "ISC",
@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "mongoose": "^9.1.2",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "serverless-http": "^4.0.0"
   }
 }
