@@ -2,10 +2,10 @@
   "name": "kataria-backend",
   "version": "1.0.0",
   "description": "xyz",
-  "main": "server.js ",
+  "main": "price.js ",
   "scripts": {
-    "test": "node server.js",
-"start": "nodemon api/server.js"
+    "test": "node price.js",
+"start": "nodemon api/price.js"
   },
   "author": "muju",
   "license": "ISC",
