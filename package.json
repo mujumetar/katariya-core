@@ -2,7 +2,7 @@
   "name": "kataria-backend",
   "version": "1.0.0",
   "description": "xyz",
-  "main": "price.js ",
+  "main": "price.js",
   "scripts": {
     "test": "node price.js",
     "start": "nodemon api/price.js"
@@ -12,6 +12,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.2.1",
+    "index": "^0.4.0",
     "mongoose": "^9.1.2",
     "nodemon": "^3.1.11",
     "serverless-http": "^4.0.0"
