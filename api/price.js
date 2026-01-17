@@ -45,7 +45,7 @@ const PriceSchema = new mongoose.Schema(
 const Price = mongoose.models.Price || mongoose.model("Price", PriceSchema);
 
 /* ================= ROUTES ================= */
-app.get("/", async (req, res) => {
+app.get("/api/price", async (req, res) => {
   try {
     await connectDB();
     let price = await Price.findOne();
@@ -57,7 +57,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.put("/", async (req, res) => {
+app.put("/api/price", async (req, res) => {
   try {
     await connectDB();
     const { price } = req.body;
