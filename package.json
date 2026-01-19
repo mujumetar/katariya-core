@@ -2,7 +2,7 @@
   "name": "kataria-backend",
   "version": "1.0.0",
   "description": "xyz",
-  "main": "price.js",
+
   "scripts": {
     "test": "node price.js",
     "start": "nodemon api/price.js"
