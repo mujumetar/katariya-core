@@ -5,16 +5,18 @@ const serverless = require("serverless-http");
 
 const app = express();
 
-/* ================= CORS (VERCEL SAFE) ================= */
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["GET", "PUT", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
-}));
+/* ================= CORS (FIXED) ================= */
+app.use(
+  cors({
+    origin: true,
+    methods: ["GET", "PUT", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 app.use(express.json());
 
-/* ================= DB (SERVERLESS CACHE) ================= */
+/* ================= DB CACHE ================= */
 let cached = global.mongoose;
 if (!cached) cached = global.mongoose = { conn: null, promise: null };
 
@@ -22,7 +24,9 @@ async function connectDB() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI);
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
+      bufferCommands: false,
+    });
   }
 
   cached.conn = await cached.promise;
@@ -35,8 +39,7 @@ const PriceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Price =
-  mongoose.models.Price || mongoose.model("Price", PriceSchema);
+const Price = mongoose.models.Price || mongoose.model("Price", PriceSchema);
 
 /* ================= ROUTES ================= */
 app.get("/", async (req, res) => {
@@ -44,8 +47,10 @@ app.get("/", async (req, res) => {
     await connectDB();
     let price = await Price.findOne();
     if (!price) price = await Price.create({ price: 0 });
+
     res.json({ price: price.price });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -55,7 +60,7 @@ app.put("/", async (req, res) => {
     await connectDB();
     const { price } = req.body;
 
-    if (!price || price <= 0) {
+    if (price === undefined || price < 0) {
       return res.status(400).json({ message: "Invalid price" });
     }
 
@@ -67,6 +72,7 @@ app.put("/", async (req, res) => {
 
     res.json({ success: true, price: updated.price });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
