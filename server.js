@@ -6,11 +6,24 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* ================= MIDDLEWARE ================= */
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "PUT"],
-  allowedHeaders: ["Content-Type"]
-}));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
 
 app.use(express.json());
 
@@ -20,7 +33,7 @@ let isConnected = false;
 async function connectDB() {
   if (isConnected) return;
 
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect("mongodb+srv://muzammilmetar82_db_user:jotodiQ7SejvtAID@katariya.pqt28ne.mongodb.net/?appName=KATARIYA");
   isConnected = true;
   console.log("MongoDB Connected");
 }
