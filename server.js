@@ -1,36 +1,28 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const serverless = require("serverless-http");
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-/* ================= CORS (FIXED) ================= */
-app.use(
-  cors({
-    origin: true,
-    methods: ["GET", "PUT", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
+/* ================= MIDDLEWARE ================= */
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "PUT"],
+  allowedHeaders: ["Content-Type"]
+}));
 
 app.use(express.json());
 
-/* ================= DB CACHE ================= */
-let cached = global.mongoose;
-if (!cached) cached = global.mongoose = { conn: null, promise: null };
+/* ================= DB CONNECTION ================= */
+let isConnected = false;
 
 async function connectDB() {
-  if (cached.conn) return cached.conn;
+  if (isConnected) return;
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
-      bufferCommands: false,
-    });
-  }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
+  await mongoose.connect(process.env.MONGODB_URI);
+  isConnected = true;
+  console.log("MongoDB Connected");
 }
 
 /* ================= MODEL ================= */
@@ -45,6 +37,7 @@ const Price = mongoose.models.Price || mongoose.model("Price", PriceSchema);
 app.get("/", async (req, res) => {
   try {
     await connectDB();
+
     let price = await Price.findOne();
     if (!price) price = await Price.create({ price: 0 });
 
@@ -77,5 +70,7 @@ app.put("/", async (req, res) => {
   }
 });
 
-/* ================= EXPORT ================= */
-module.exports = serverless(app);
+/* ================= START SERVER ================= */
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

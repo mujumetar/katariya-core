@@ -4,8 +4,8 @@
   "description": "xyz",
 
   "scripts": {
-    "test": "node price.js",
-    "start": "nodemon api/price.js"
+    "test": "node server.js",
+    "start": "nodemon server.js"
   },
   "author": "muju",
   "license": "ISC",
